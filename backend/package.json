@@ -4,6 +4,8 @@
     "deploy": "wrangler deploy --minify src/index.ts"
   },
   "dependencies": {
+    "@ali47/medium-common": "^1.0.3",
+    "@ali47/medium-zod": "^1.0.3",
     "@prisma/client": "^5.10.2",
     "@prisma/extension-accelerate": "^1.0.0",
     "@types/bcrypt": "^5.0.2",

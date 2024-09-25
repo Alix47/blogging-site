@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { hashpass , checkpass} from '../passwordhashing/hash';
 import { decode, sign, verify } from 'hono/jwt'
-import { createBlogInput, updateBlogInput } from '@vilen23/medium-zod';
+import { createBlogInput, updateBlogInput} from "@ali47/medium-common"
 
 export const blogRouter = new Hono<{
     Bindings: {

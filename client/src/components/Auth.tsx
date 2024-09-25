@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { ChangeEvent, useState } from "react";
-import { SignupInput } from "@vilen23/medium-zod";
+import { SignupInput } from "@ali47/medium-common";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useSetRecoilState } from "recoil";
