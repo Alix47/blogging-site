@@ -1,5 +1,6 @@
 import { userAtom } from "@/State/Post/user/user";
 import { BlogHomeCard } from "@/components/BlogHomeCard";
+import Hero from "@/components/Hero";
 import { LoadingBlog } from "@/components/LoadingBLog";
 import { Button } from "@/components/ui/button";
 import { BACKEND_URL } from "@/config";
@@ -9,6 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
 export function Home() {
+  const path = window.location.pathname;
   const user = useRecoilValue(userAtom);
   const divRef = useRef(null);
   const location = useLocation();
@@ -21,7 +23,7 @@ export function Home() {
     if (divRef.current) {
         //@ts-ignore
         const divStart = divRef.current.offsetTop;
-        //@ts-ignore
+        // @ts-ignore
       const divEnd = divStart + divRef.current.offsetHeight;
   
       const handleScroll = () => {
@@ -43,7 +45,7 @@ export function Home() {
 
   useEffect(() => {
     if (location.hash) {
-      let elem = document.getElementById(location.hash.slice(1));
+      const elem = document.getElementById(location.hash.slice(1));
       if (elem) elem.scrollIntoView({ behavior: "smooth" });
     } else {
       window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -72,21 +74,20 @@ export function Home() {
 
   return (
     <>
-      <div className="w-full  flex items-center flex-col font-poppins justify-center pb-10" >
+      <Hero/>
+      <div id="ourStory" className="w-full  flex items-center flex-col font-poppins justify-center" >
         <div className="w-full flex flex-col items-center md:min-h-screen" ref={divRef} style={{opacity: opacity}}>
         <div className="mt-[80px] px-1 md:px-0 md:mt-[200px] flex flex-col items-center justify-center min">
           <p className="text-[30px]  md:text-[40px] font-bold text-center ">
-            A Community Space for Shared Reflections and Thoughts
+            "Unleash Your Voice: Create, Share, and Inspire with Your Stories"
           </p>
           <p className="text-[14px] px-1 md:px-0 md:text-xl md:w-[700px] text-center text-slate-600">
-            "Voices of the Valley" - Where your thoughts find their echo. A
-            tapestry of insights woven from the voices of many, awaiting your
-            unique thread.
+            Whether sharing your expertise, breaking news, or whatever’s on your mind, you’re in good company on Medium. Sign up to discover why millions of people have published their passions here.
           </p>
         </div>
         {!user.id ? (
           <div className="flex mt-[50px] gap-[10px] items-center">
-            <p className=" text-gray-600  md:text-[20px]">Sign up to Start writing</p>
+            {/* <p className=" text-gray-600  md:text-[20px]">Sign up to Start writing</p> */}
             <Button className="rounded-md border-black border-2 hover:bg-white hover:text-black" onClick={() => {
                 navigate("/signup");
             }}>
@@ -103,7 +104,7 @@ export function Home() {
         {!user.id && (
           <div className="flex items-center flex-col mt-[4px] gap-1">
             <p className="text-[12px] md:text-[12px] text-gray-700">
-              Sign up to get notified when we launch.{" "}
+              Sign up to create your first blog.{" "}
             </p>
             <p className="text-[12px] text-gray-700 underline hover:text-black cursor-pointer">
               {" "}
@@ -141,26 +142,27 @@ export function Home() {
             })}
           </div>
         </div>
-        <div id="ourStory" className="my-[50px] w-full flex  md:h-[500px] md:p-[40px]">
-          <div className="flex flex-col md:flex-row rounded-2xl  items-center justify-center">
-            <div className="w-[90vw] md:w-[45%] bg-black md:h-[200px] flex flex-col items-center rounded-full  md:ml-10 justify-center py-4 md:py-0">
-              <p className="text-white font-extrabold text-3xl md:text-5xl ">
-                "Echoes in the Ether"
+        <div className="mt-[50px] w-full  bg-black md:h-full md:p-[40px]">
+          <div className="flex flex-col md:flex-col rounded-2xl  items-center justify-center">
+            <div className="w-[90vw] md:w-[70%] bg-black md:h-[200px] flex flex-col items-center rounded-full  justify-center py-4 md:py-0">
+              <p className="text-white font-bold text-3xl md:text-5xl ">
+                "Create a blog worth sharing"
               </p>
               <p className="text-white text-[14px] px-2 md:text-[20px] md:mt-2">
-                A Blogging Platform for Shared Stories and Thoughts
+                Create a unique and beautiful blog easily.
               </p>
             </div>
-            <div className="h-full mt-4 md:w-[55%]  flex justify-center md:px-20 px-[4vw] items-center">
-              <p className="md:font-bold text-center md:text-justify text-[16px] md:text-[20px]">
-                "Echoes in the Ether" is more than a blogging platform; it's a
-                digital sanctuary where stories intertwine, and thoughts
-                reverberate. Here, every post is a chapter, every comment a
-                conversation, creating a tapestry of shared experiences. Join us
-                to share your story, connect with others, and let your voice
-                resonate in the vast expanse of the digital world.
-              </p>
-            </div>
+           
+            {!user.id && path!=="/signup" && (
+                <button
+                  onClick={() => {
+                    navigate("/signup");
+                  }}
+                  className="rounded-full px-2 md:p-3 bg-white text-black transition-all duration-600 md:font-semibold text-xs md:text-lg hover:bg-black border-2 py-0 border-black  hover:text-white hover:border-white hover:border-2 hover:shadow-xl hidden md:flex items-center"
+                >
+                  Get Started
+                </button>
+              )}
           </div>
         </div>
       </div>
