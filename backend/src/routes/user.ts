@@ -66,8 +66,13 @@ userRouter.post("/signup", async (c) => {
 
     const token = await sign({ id: user.id }, c.env.JWT_SECRET);
     return c.json({ token });
+
   } catch (error) {
-    return c.status(403);
+    c.status(500); // Internal Server Error
+    return c.json({ message: "An error occurred during signup", error: error.message });
+  }finally {
+    // Ensure the Prisma Client is closed
+    await prisma.$disconnect();
   }
 });
 
@@ -113,9 +118,9 @@ userRouter.post("/signin", async (c) => {
 });
 
 userRouter.get("/getuser/:id", async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env?.DATABASE_URL,
-  }).$extends(withAccelerate());
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env?.DATABASE_URL,
+    }).$extends(withAccelerate());
 
   const authorid = c.req.param("id");
   try {

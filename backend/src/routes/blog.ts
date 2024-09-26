@@ -11,9 +11,25 @@ export const blogRouter = new Hono<{
         JWT_SECRET: string,
     },
     Variables: {
-      userId: string
+      userId: string,
     }
 }>();
+
+blogRouter.use('/*', async (c, next) => {
+  //get the header and verify it
+  try {
+    const authHeader =  c.req.header("token") || "";
+    const user = await verify(authHeader,c.env.JWT_SECRET);
+    console.log(user);
+    if(user && typeof user.id === 'string'){
+      c.set("userId",user.id as string);
+      await next();
+  }
+  } catch (error) {
+    c.status(403);
+    return c.json({message:"UnAuthorized"})
+  }
+})
 
 //pagination
 blogRouter.get('/bulk',async (c)=>{
@@ -57,24 +73,7 @@ blogRouter.get('/:id',async (c)=>{
     })
   }
 })
-
-blogRouter.use('/*', async (c, next) => {
-  //get the header and verify it
-  try {
-    const authHeader =  c.req.header("token") || "";
-    const user = await verify(authHeader,c.env.JWT_SECRET);
-    console.log(user);
-    if(user){
-      c.set("userId",user.id);
-      await next();
-  }
-  } catch (error) {
-    c.status(403);
-    return c.json({message:"UnAuthorized"})
-  }
-})
-  
-  
+    
   
 blogRouter.post('/',async (c)=>{
   const userId = c.get("userId");
